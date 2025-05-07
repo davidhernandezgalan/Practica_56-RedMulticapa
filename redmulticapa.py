@@ -115,3 +115,9 @@ def onclick_training(event):
     # Re-entrenar y actualizar
     clf.fit(X, y)
     plot_decision_boundary()
+
+    # Conectar eventos
+cid = fig.canvas.mpl_connect('button_press_event', onclick)
+btn_train.on_clicked(start_training)
+
+plt.show()
