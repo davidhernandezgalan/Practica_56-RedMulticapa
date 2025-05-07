@@ -71,3 +71,20 @@ def onclick(event):
     ax.scatter(event.xdata, event.ydata, color=color, s=50)
     fig.canvas.draw()
 
+# Función para el botón de entrenamiento
+def start_training(event):
+    global training, clf
+    if len(X) < 2:
+        print("Necesitas al menos 2 puntos para comenzar la clasificación")
+        return
+    
+    training = True
+    ax.set_title("Clasificación")
+    
+    # Entrenar modelo inicial
+    clf.fit(X, y)
+    plot_decision_boundary()
+    
+    # Actualizar función de clic para entrenamiento continuo
+    fig.canvas.mpl_disconnect(cid)
+    fig.canvas.mpl_connect('button_press_event', onclick_training)
