@@ -88,3 +88,30 @@ def start_training(event):
     # Actualizar función de clic para entrenamiento continuo
     fig.canvas.mpl_disconnect(cid)
     fig.canvas.mpl_connect('button_press_event', onclick_training)
+
+# Función para clics durante el entrenamiento
+def onclick_training(event):
+    if event.inaxes != ax:
+        return
+    
+    if event.button == 1:  # Botón izquierdo - Rojo
+        label = 0
+        color = 'red'
+    elif event.button == 3:  # Botón derecho - Azul
+        label = 1
+        color = 'blue'
+    else:
+        return
+    
+    # Añadir punto
+    global X, y
+    new_point = np.array([[event.xdata, event.ydata]])
+    X = np.vstack([X, new_point]) if len(X) > 0 else new_point
+    y = np.append(y, label)
+    
+    # Dibujar punto
+    ax.scatter(event.xdata, event.ydata, color=color, s=50)
+    
+    # Re-entrenar y actualizar
+    clf.fit(X, y)
+    plot_decision_boundary()
