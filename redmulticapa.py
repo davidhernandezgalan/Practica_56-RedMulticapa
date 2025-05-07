@@ -47,4 +47,27 @@ def plot_decision_boundary():
         ax.contourf(xx, yy, Z, alpha=0.2, cmap=plt.cm.RdBu)
         fig.canvas.draw()
 
+# Función para manejar clics en el gráfico
+def onclick(event):
+    if event.inaxes != ax or training:
+        return
+    
+    if event.button == 1:  # Botón izquierdo - Rojo
+        label = 0
+        color = 'red'
+    elif event.button == 3:  # Botón derecho - Azul
+        label = 1
+        color = 'blue'
+    else:
+        return
+    
+    # Añadir punto
+    global X, y
+    new_point = np.array([[event.xdata, event.ydata]])
+    X = np.vstack([X, new_point]) if len(X) > 0 else new_point
+    y = np.append(y, label)
+    
+    # Dibujar punto
+    ax.scatter(event.xdata, event.ydata, color=color, s=50)
+    fig.canvas.draw()
 
